@@ -128,6 +128,56 @@ fi
 # 设置执行权限
 chmod +x /opt/xray/xray
 
+# 下载远程配置文件到 /opt/xray
+echo "下载配置文件 config.json 到 /opt/xray..."
+CONFIG_URL="https://raw.githubusercontent.com/yodit10124/xray-alpine/refs/heads/main/config.json"
+if command -v wget &> /dev/null; then
+    wget -qO /opt/xray/config.json "$CONFIG_URL"
+elif command -v curl &> /dev/null; then
+    curl -L -o /opt/xray/config.json "$CONFIG_URL"
+else
+    echo "警告：无法下载 config.json，需要 wget 或 curl"
+fi
+
+# 根据包管理器选择启动方式（apk -> OpenRC init.d，否则 systemd）
+if command -v apk &> /dev/null; then
+    echo "检测到 apk 包管理器，部署 init.d 脚本并启动..."
+    INIT_URL="https://raw.githubusercontent.com/yodit10124/xray-alpine/refs/heads/main/init.d/xray"
+    if command -v wget &> /dev/null; then
+        wget -qO /etc/init.d/xray "$INIT_URL"
+    elif command -v curl &> /dev/null; then
+        curl -L -o /etc/init.d/xray "$INIT_URL"
+    else
+        echo "警告：无法下载 init.d 脚本，需要 wget 或 curl"
+    fi
+    if [ -f /etc/init.d/xray ]; then
+        chmod +x /etc/init.d/xray
+        if command -v rc-update &> /dev/null; then
+            rc-update add xray default || true
+        fi
+        /etc/init.d/xray start || echo "警告：无法通过 init.d 启动 xray"
+    fi
+else
+    echo "非 apk 系统，部署 systemd 单元并启动..."
+    SYSTEMD_URL="https://raw.githubusercontent.com/yodit10124/xray-alpine/refs/heads/main/systemd/xray.service"
+    if command -v wget &> /dev/null; then
+        wget -qO /lib/systemd/system/xray.service "$SYSTEMD_URL"
+    elif command -v curl &> /dev/null; then
+        curl -L -o /lib/systemd/system/xray.service "$SYSTEMD_URL"
+    else
+        echo "警告：无法下载 systemd 单元文件，需要 wget 或 curl"
+    fi
+    if [ -f /lib/systemd/system/xray.service ]; then
+        chmod 644 /lib/systemd/system/xray.service
+        if command -v systemctl &> /dev/null; then
+            systemctl daemon-reload
+            systemctl enable --now xray.service || systemctl start xray.service || echo "警告：systemctl 启动 xray 失败"
+        else
+            echo "警告：未检测到 systemctl，无法启用 systemd 服务"
+        fi
+    fi
+fi
+
 # 显示完成信息
 echo "=================================="
 echo "    Xray 安装完成！"
