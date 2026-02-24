@@ -1,0 +1,21 @@
+#!/sbin/openrc-run
+
+name="xray"
+description="Xray Proxy Service"
+command="/opt/xray/xray"
+command_args="run -c /opt/xray/config.json"
+command_background=true
+pidfile="/run/${RC_SVCNAME}.pid"
+command_user="root"
+
+depend() {
+    need net
+    after firewall
+}
+
+start_pre() {
+    # 检查配置文件是否存在
+    if [ ! -f "/opt/xray/config.json" ]; then
+        ewarn "配置文件 /opt/xray/config.json 不存在，使用默认配置"
+    fi
+}
