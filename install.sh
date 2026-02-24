@@ -8,7 +8,7 @@ echo "    Xray 安装脚本启动"
 echo "=================================="
 
 # 检查并安装所需软件包
-echo "[1/6] 检查并安装必要软件包 (wget, curl, unzip)..."
+echo "检查并安装必要软件包"
 
 # 检测包管理器并安装
 if command -v apt &> /dev/null; then
@@ -31,7 +31,7 @@ elif command -v pacman &> /dev/null; then
 elif command -v apk &> /dev/null; then
     # Alpine Linux 系列
     echo "检测到 apk 包管理器"
-    apk update
+    apk add
     apk add wget curl unzip
 else
     echo "警告：无法自动安装软件包，请确保系统已安装 wget、curl 和 unzip"
@@ -41,7 +41,7 @@ fi
 echo "软件包检查完成"
 
 # 创建 /opt/xray 目录
-echo "[2/6] 创建 /opt/xray 目录..."
+echo "创建 /opt/xray 目录..."
 mkdir -p /opt/xray
 if [ $? -eq 0 ]; then
     echo "目录创建成功：/opt/xray"
@@ -54,7 +54,7 @@ fi
 cd /opt/xray || exit 1
 
 # 获取最新版本号
-echo "[3/6] 获取 Xray 最新版本信息..."
+echo "获取 Xray 最新版本信息..."
 
 # 使用 GitHub API 获取最新版本号
 if command -v curl &> /dev/null; then
@@ -78,7 +78,7 @@ DOWNLOAD_URL="https://github.com/XTLS/Xray-core/releases/download/${LATEST_VERSI
 echo "下载地址：$DOWNLOAD_URL"
 
 # 下载 Xray 压缩包
-echo "[4/6] 开始下载 Xray ${LATEST_VERSION}..."
+echo "开始下载 Xray ${LATEST_VERSION}..."
 
 # 尝试使用 wget 下载，如果没有 wget 则尝试使用 curl
 if command -v wget &> /dev/null; then
@@ -98,7 +98,7 @@ else
 fi
 
 # 解压文件
-echo "[5/6] 正在解压文件到当前目录..."
+echo "正在解压文件到当前目录..."
 if command -v unzip &> /dev/null; then
     unzip -q Xray-linux-64.zip
 else
@@ -116,7 +116,7 @@ else
 fi
 
 # 删除压缩包
-echo "[6/6] 清理临时文件..."
+echo "清理临时文件..."
 rm -f Xray-linux-64.zip
 
 if [ $? -eq 0 ]; then
@@ -135,3 +135,4 @@ echo "=================================="
 echo "安装版本：$LATEST_VERSION"
 echo "安装位置：/opt/xray"
 echo "=================================="
+
