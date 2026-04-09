@@ -14,7 +14,7 @@
     {
       "listen": "127.0.0.1",
       "port": 62789,
-      "protocol": "dokodemo-door",
+      "protocol": "tunnel",
       "settings": {
         "address": "127.0.0.1"
       },
@@ -23,19 +23,21 @@
       "tag": "api"
     },
     {
-      "listen": null,
-      "port": 18621,
-      "protocol": "mixed",
+      "listen": "0.0.0.0",
+      "port": 10001,
+      "protocol": "vless",
       "settings": {
-        "accounts": [
+        "clients": [
           {
-            "pass": "Yodit10124@@@",
-            "user": "Yodit10124@@@"
+            "email": "a8vscys9",
+            "flow": "",
+            "id": "90c540c3-6dfc-42e0-88e0-6a7944aef1c0",
+            "password": ""
           }
         ],
-        "auth": "password",
-        "ip": "127.0.0.1",
-        "udp": false
+        "decryption": "mlkem768x25519plus.native.600s.gAKAieCavqgiU-LbTgmxcZf2tG3WxB9dywJF-kX2Rms",
+        "encryption": "mlkem768x25519plus.native.0rtt.kf4mIEaqvzGPXdM-aJs8aMkPSv3M9N5HfQjmOq3WXHs",
+        "selectedAuth": "X25519, not Post-Quantum"
       },
       "sniffing": {
         "destOverride": [
@@ -48,8 +50,78 @@
         "metadataOnly": false,
         "routeOnly": false
       },
-      "streamSettings": null,
-      "tag": "inbound-18621"
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none",
+        "tcpSettings": {
+          "acceptProxyProtocol": false,
+          "header": {
+            "type": "none"
+          }
+        }
+      },
+      "tag": "inbound-10001"
+    },
+    {
+      "listen": "0.0.0.0",
+      "port": 10002,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "email": "2ihpza28",
+            "flow": "xtls-rprx-vision",
+            "id": "e564899d-a7ae-4cca-b727-3175f03168d6"
+          }
+        ],
+        "decryption": "none",
+        "encryption": "none"
+      },
+      "sniffing": {
+        "destOverride": [
+          "http",
+          "tls",
+          "quic",
+          "fakedns"
+        ],
+        "enabled": false,
+        "metadataOnly": false,
+        "routeOnly": false
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "realitySettings": {
+          "maxClientVer": "",
+          "maxTimediff": 0,
+          "minClientVer": "",
+          "mldsa65Seed": "",
+          "privateKey": "AONEIV5WBpBPgNFvNXvnwClUO5EKJMpfciuWBon_PmE",
+          "serverNames": [
+            "www.google.cn"
+          ],
+          "shortIds": [
+            "6baea56f",
+            "4726101809",
+            "6f87a885c7d4da40",
+            "9df0",
+            "6749c67fcda635",
+            "02eec7306e05",
+            "1cb202",
+            "b4"
+          ],
+          "show": false,
+          "target": "www.google.cn:443",
+          "xver": 0
+        },
+        "security": "reality",
+        "tcpSettings": {
+          "acceptProxyProtocol": false,
+          "header": {
+            "type": "none"
+          }
+        }
+      },
+      "tag": "inbound-10002"
     }
   ],
   "log": {
@@ -68,7 +140,7 @@
     {
       "protocol": "freedom",
       "settings": {
-        "domainStrategy": "UseIPv6v4",
+        "domainStrategy": "ForceIPv4v6",
         "noises": [],
         "redirect": ""
       },
