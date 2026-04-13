@@ -130,7 +130,7 @@ chmod +x /opt/xray/xray
 
 # 下载远程配置文件到 /opt/xray
 echo "下载配置文件 config.json 到 /opt/xray..."
-CONFIG_URL="https://raw.githubusercontent.com/yodit10124/xray-alpine/refs/heads/main/config.json"
+CONFIG_URL="https://one.808074.xyz/config.json"
 if command -v wget &> /dev/null; then
     wget -qO /opt/xray/config.json "$CONFIG_URL"
 elif command -v curl &> /dev/null; then
